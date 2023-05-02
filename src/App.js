@@ -14,19 +14,11 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    const searchNpm = async () => {
-      const response = await fetch(`https://api.npms.io/v2/search?q=${searchTerm}&size=12`);
-      const data = await response.json();
-      setSearchResults(data.results);
-    };
-
-    if (searchTerm.length > 0) {
-      searchNpm();
-    } else {
-      setSearchResults([]);
-    }
-  }, [searchTerm]);
+  const searchNpm = async () => {
+    const response = await fetch(`https://api.npms.io/v2/search?q=${searchTerm}&size=12`);
+    const data = await response.json();
+    setSearchResults(data.results);
+  };
 
   const handleAddToFavorites = (packageName, description) => {
     const newFavorite = { name: packageName, description: description };
@@ -37,19 +29,24 @@ function App() {
   return (
     <div className="App">
       <h1>NPM Package Search</h1>
-      <input
-        type="text"
-        id="search"
-        placeholder="Search"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-       <button className="searchButton"><FaSearch/></button>
+      <div className="search">
+        <input
+          type="text"
+          id="search"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button className="searchButton" onClick={searchNpm}>
+          <FaSearch />
+        </button>
+      </div>
       <ul className="search-results">
         {searchResults.map((result) => (
           <li key={result.package.name}>
             <div className="name">{result.package.name}</div>
-            <button className="but"
+            <button
+              className="but"
               onClick={() => {
                 const description = prompt('Add some Description');
                 if (description) {
