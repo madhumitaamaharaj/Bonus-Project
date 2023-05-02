@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     const searchNpm = async () => {
-      const response = await fetch(`https://api.npms.io/v2/search?q=${searchTerm}&size=20`);
+      const response = await fetch(`https://api.npms.io/v2/search?q=${searchTerm}&size=12`);
       const data = await response.json();
       setSearchResults(data.results);
     };
